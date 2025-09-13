@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment - AmaKart</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .checkout-progress {
+            display: flex;
+            justify-content: center;
+            margin: 2rem 0;
+        }
+        
+        .progress-step {
+            display: flex;
+            align-items: center;
+            margin: 0 1rem;
+        }
+        
+        .step-number {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: #ddd;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 0.5rem;
+            font-weight: bold;
+        }
+        
+        .step-number.active {
+            background: #e74c3c;
+        }
+        
+        .step-number.completed {
+            background: #27ae60;
+        }
+        
+        .payment-container {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+        
+        .payment-methods {
+            background: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        
+        .payment-method {
+            border: 2px solid #eee;
+            border-radius: 10px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            cursor: pointer;
+            transition: border-color 0.3s ease;
+        }
+        
+        .payment-method:hover {
+            border-color: #e74c3c;
+        }
+        
+        .payment-method.selected {
+            border-color: #e74c3c;
+            background: #fff5f5;
+        }
+        
+        .payment-method input[type="radio"] {
+            margin-right: 1rem;
+        }
+        
+        .payment-method-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .payment-icon {
+            font-size: 1.5rem;
+            margin-right: 0.5rem;
+        }
+        
+        .payment-form {
+            margin-top: 1rem;
+            display: none;
+        }
+        
+        .payment-form.active {
+            display: block;
+        }
+        
+        .card-input {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .card-number {
+            flex: 1;
+        }
+        
+        .card-details {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+        
+        .security-section {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin: 2rem 0;
+        }
+        
+        .security-features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .security-feature {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .order-summary {
+            background: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            height: fit-content;
+        }
+        
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+        }
+        
+        .summary-total {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #e74c3c;
+            border-top: 2px solid #eee;
+            padding-top: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .checkout-actions {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 2rem;
+        }
+        
+        @media (max-width: 768px) {
+            .payment-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .card-details {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Fixed Disclaimer Bar -->
+    <div class="disclaimer-bar">
+        This is a demo portfolio website. All data is for educational purposes only and not for commercial use.
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Header -->
+        <header class="header">
+            <nav class="navbar">
+                <a href="home.html" class="logo">AmaKart</a>
+                
+                <ul class="nav-links">
+                    <li><a href="home.html">Home</a></li>
+                    <li><a href="catalog.html">Catalog</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+                
+                <div class="user-actions">
+                    <a href="cart.html" class="btn btn-outline">
+                        Cart (<span id="cart-count">0</span>)
+                    </a>
+                    <a href="signin.html" class="btn btn-primary" id="login-btn">Sign In</a>
+                    <a href="account.html" class="btn btn-secondary" id="user-menu" style="display: none;">My Account</a>
+                    <button onclick="AmaKart.signOutUser()" class="btn btn-outline" id="logout-btn" style="display: none;">Sign Out</button>
+                </div>
+            </nav>
+        </header>
+
+        <!-- Checkout Progress -->
+        <div class="checkout-progress">
+            <div class="progress-step">
+                <div class="step-number completed">1</div>
+                <span>Address</span>
+            </div>
+            <div class="progress-step">
+                <div class="step-number active">2</div>
+                <span>Payment</span>
+            </div>
+            <div class="progress-step">
+                <div class="step-number">3</div>
+                <span>Review</span>
+            </div>
+        </div>
+
+        <!-- Payment Section -->
+        <section class="container">
+            <h1 class="text-center mb-4">Payment Information</h1>
+            
+            <!-- Security Disclaimer -->
+            <div class="alert alert-warning">
+                <strong>Demo Notice:</strong> This is a demo website. Do not enter real payment information. This form is for demonstration purposes only and no real transactions will be processed.
+            </div>
+            
+            <div class="payment-container">
+                <div class="payment-methods">
+                    <h3>Select Payment Method</h3>
+                    
+                    <!-- Credit Card -->
+                    <div class="payment-method" onclick="selectPaymentMethod('credit')">
+                        <div class="payment-method-header">
+                            <input type="radio" name="paymentMethod" value="credit" id="credit-card">
+                            <label for="credit-card">
+                                <span class="payment-icon">💳</span>
+                                Credit Card
+                            </label>
+                        </div>
+                        <div class="payment-form" id="credit-form">
+                            <div class="card-input">
+                                <input type="text" class="form-input card-number" placeholder="Card Number" maxlength="19">
+                                <input type="text" class="form-input" placeholder="CVV" maxlength="4" style="width: 80px;">
+                            </div>
+                            <div class="card-details">
+                                <input type="text" class="form-input" placeholder="MM/YY">
+                                <input type="text" class="form-input" placeholder="Cardholder Name">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- PayPal -->
+                    <div class="payment-method" onclick="selectPaymentMethod('paypal')">
+                        <div class="payment-method-header">
+                            <input type="radio" name="paymentMethod" value="paypal" id="paypal">
+                            <label for="paypal">
+                                <span class="payment-icon">🅿️</span>
+                                PayPal
+                            </label>
+                        </div>
+                        <div class="payment-form" id="paypal-form">
+                            <p>You will be redirected to PayPal to complete your payment.</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Apple Pay -->
+                    <div class="payment-method" onclick="selectPaymentMethod('apple')">
+                        <div class="payment-method-header">
+                            <input type="radio" name="paymentMethod" value="apple" id="apple-pay">
+                            <label for="apple-pay">
+                                <span class="payment-icon">🍎</span>
+                                Apple Pay
+                            </label>
+                        </div>
+                        <div class="payment-form" id="apple-form">
+                            <p>Complete your payment using Touch ID or Face ID.</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Google Pay -->
+                    <div class="payment-method" onclick="selectPaymentMethod('google')">
+                        <div class="payment-method-header">
+                            <input type="radio" name="paymentMethod" value="google" id="google-pay">
+                            <label for="google-pay">
+                                <span class="payment-icon">G</span>
+                                Google Pay
+                            </label>
+                        </div>
+                        <div class="payment-form" id="google-form">
+                            <p>Complete your payment using your Google account.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Order Summary -->
+                <div class="order-summary">
+                    <h3>Order Summary</h3>
+                    <div id="order-items">
+                        <!-- Order items will be loaded here -->
+                    </div>
+                    <div class="summary-item">
+                        <span>Subtotal</span>
+                        <span id="subtotal">$0.00</span>
+                    </div>
+                    <div class="summary-item">
+                        <span>Shipping</span>
+                        <span id="shipping">$0.00</span>
+                    </div>
+                    <div class="summary-item">
+                        <span>Tax</span>
+                        <span id="tax">$0.00</span>
+                    </div>
+                    <div class="summary-item summary-total">
+                        <span>Total</span>
+                        <span id="total">$0.00</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Security Section -->
+            <div class="security-section">
+                <h3>🔒 Secure Payment</h3>
+                <p>Your payment information is protected by industry-standard security measures:</p>
+                <div class="security-features">
+                    <div class="security-feature">
+                        <span>🔐</span>
+                        <span>TLS/SSL Encryption</span>
+                    </div>
+                    <div class="security-feature">
+                        <span>🛡️</span>
+                        <span>PCI DSS Compliant</span>
+                    </div>
+                    <div class="security-feature">
+                        <span>🔍</span>
+                        <span>Fraud Protection</span>
+                    </div>
+                    <div class="security-feature">
+                        <span>✅</span>
+                        <span>Secure Processing</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Checkout Actions -->
+            <div class="checkout-actions">
+                <a href="addresses.html" class="btn btn-outline">Back to Address</a>
+                <button class="btn btn-primary" onclick="proceedToReview()" id="continue-btn" disabled>
+                    Continue to Review
+                </button>
+            </div>
+        </section>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="home.html">Home</a></li>
+                        <li><a href="catalog.html">Catalog</a></li>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Customer Service</h3>
+                    <ul>
+                        <li><a href="customerservice.html">Help Center</a></li>
+                        <li><a href="customerservice.html">Shipping Info</a></li>
+                        <li><a href="customerservice.html">Returns</a></li>
+                        <li><a href="customerservice.html">Track Order</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Account</h3>
+                    <ul>
+                        <li><a href="signin.html">Sign In</a></li>
+                        <li><a href="register.html">Create Account</a></li>
+                        <li><a href="account.html">My Account</a></li>
+                        <li><a href="orders.html">Order History</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Connect</h3>
+                    <ul>
+                        <li><a href="#">Facebook</a></li>
+                        <li><a href="#">Twitter</a></li>
+                        <li><a href="#">Instagram</a></li>
+                        <li><a href="#">LinkedIn</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 AmaKart. This is a demo portfolio website for educational purposes only.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script type="module" src="shared.js"></script>
+    <script src="payment.js"></script>
+</body>
+</html>

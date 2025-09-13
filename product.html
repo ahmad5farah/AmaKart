@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Details - AmaKart</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .product-detail {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            margin: 2rem 0;
+        }
+        
+        .product-images {
+            position: relative;
+        }
+        
+        .main-image {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+        }
+        
+        .thumbnail-images {
+            display: flex;
+            gap: 0.5rem;
+            overflow-x: auto;
+        }
+        
+        .thumbnail {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 5px;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: border-color 0.3s ease;
+        }
+        
+        .thumbnail.active {
+            border-color: #e74c3c;
+        }
+        
+        .product-info h1 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: #333;
+        }
+        
+        .product-price {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #e74c3c;
+            margin-bottom: 1rem;
+        }
+        
+        .product-rating {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .stars {
+            color: #f39c12;
+            font-size: 1.2rem;
+        }
+        
+        .rating-text {
+            color: #666;
+        }
+        
+        .product-description {
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+        
+        .product-actions {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        
+        .quantity-selector {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .quantity-input {
+            width: 60px;
+            text-align: center;
+            padding: 8px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+        }
+        
+        .product-features {
+            margin-top: 2rem;
+        }
+        
+        .feature-list {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .feature-list li {
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .feature-list li:before {
+            content: "✓";
+            color: #27ae60;
+            font-weight: bold;
+            margin-right: 0.5rem;
+        }
+        
+        @media (max-width: 768px) {
+            .product-detail {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+            
+            .product-actions {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Fixed Disclaimer Bar -->
+    <div class="disclaimer-bar">
+        This is a demo portfolio website. All data is for educational purposes only and not for commercial use.
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Header -->
+        <header class="header">
+            <nav class="navbar">
+                <a href="home.html" class="logo">AmaKart</a>
+                
+                <ul class="nav-links">
+                    <li><a href="home.html">Home</a></li>
+                    <li><a href="catalog.html">Catalog</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+                
+                <div class="search-bar">
+                    <input type="text" id="search-input" placeholder="Search for products...">
+                    <button onclick="performSearch()">Search</button>
+                </div>
+                
+                <div class="user-actions">
+                    <a href="wishlist.html" class="btn btn-outline">
+                        Wishlist (<span id="wishlist-count">0</span>)
+                    </a>
+                    <a href="cart.html" class="btn btn-outline">
+                        Cart (<span id="cart-count">0</span>)
+                    </a>
+                    <a href="signin.html" class="btn btn-primary" id="login-btn">Sign In</a>
+                    <a href="account.html" class="btn btn-secondary" id="user-menu" style="display: none;">My Account</a>
+                    <button onclick="AmaKart.signOutUser()" class="btn btn-outline" id="logout-btn" style="display: none;">Sign Out</button>
+                </div>
+            </nav>
+        </header>
+
+        <!-- Breadcrumb -->
+        <div class="container">
+            <nav style="margin: 1rem 0;">
+                <a href="home.html">Home</a> > 
+                <a href="catalog.html">Catalog</a> > 
+                <span id="breadcrumb-category">Product</span> > 
+                <span id="breadcrumb-product">Details</span>
+            </nav>
+        </div>
+
+        <!-- Product Detail Section -->
+        <section class="container">
+            <div class="product-detail" id="product-detail">
+                <!-- Product will be loaded dynamically -->
+            </div>
+        </section>
+
+        <!-- Related Products -->
+        <section class="container">
+            <h2 class="text-center mb-4">Related Products</h2>
+            <div class="grid grid-4" id="related-products">
+                <!-- Related products will be loaded dynamically -->
+            </div>
+        </section>
+
+        <!-- Product Reviews Section -->
+        <section class="container">
+            <div class="card">
+                <div class="card-header">
+                    <h3>Customer Reviews</h3>
+                </div>
+                <div class="card-body">
+                    <div id="reviews-section">
+                        <!-- Reviews will be loaded dynamically -->
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="home.html">Home</a></li>
+                        <li><a href="catalog.html">Catalog</a></li>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Customer Service</h3>
+                    <ul>
+                        <li><a href="customerservice.html">Help Center</a></li>
+                        <li><a href="customerservice.html">Shipping Info</a></li>
+                        <li><a href="customerservice.html">Returns</a></li>
+                        <li><a href="customerservice.html">Track Order</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Account</h3>
+                    <ul>
+                        <li><a href="signin.html">Sign In</a></li>
+                        <li><a href="register.html">Create Account</a></li>
+                        <li><a href="account.html">My Account</a></li>
+                        <li><a href="orders.html">Order History</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Connect</h3>
+                    <ul>
+                        <li><a href="#">Facebook</a></li>
+                        <li><a href="#">Twitter</a></li>
+                        <li><a href="#">Instagram</a></li>
+                        <li><a href="#">LinkedIn</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 AmaKart. This is a demo portfolio website for educational purposes only.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script type="module" src="shared.js"></script>
+    <script src="product.js"></script>
+</body>
+</html>

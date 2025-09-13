@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Product Detail</title>
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js";
+    import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js";
+
+    // ✅ Firebase config (use your own project config here)
+    const firebaseConfig = {
+      apiKey: "AIzaSyD-ZeUiuD_laxz-50Kc5vOm-YafSoVHiYQ",
+      authDomain: "amakart-demo.firebaseapp.com",
+      projectId: "amakart-demo",
+      storageBucket: "amakart-demo.firebasestorage.app",
+      messagingSenderId: "481039794482",
+      appId: "1:481039794482:web:ee73c35d47383fe133572b",
+      measurementId: "G-7JBDL6X9F4"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    async function loadProduct() {
+      const params = new URLSearchParams(window.location.search);
+      const productId = params.get("id"); // example: ?id=101
+
+      if (!productId) {
+        document.getElementById("product-container").innerHTML =
+          "<p>❌ No product selected. Add ?id=PRODUCT_ID to URL.</p>";
+        return;
+      }
+
+      try {
+        const docRef = doc(db, "products", productId);
+        const docSnap = await getDoc(docRef);
+
+        if (docSnap.exists()) {
+          const product = docSnap.data();
+
+          document.getElementById("productImage").src = product.image_url || "https://via.placeholder.com/300";
+          document.getElementById("productName").innerText = product.product_name || "Unnamed Product";
+          document.getElementById("productPrice").innerText = "₹" + product.Price.toLocaleString();
+          document.getElementById("productCategory").innerText = product.category || "N/A";
+          document.getElementById("productDesc").innerText = product.description || "No description available.";
+          document.getElementById("productStock").innerText = product.stock_quantity + " available";
+          document.getElementById("productSKU").innerText = product.sku || "N/A";
+          document.getElementById("productExtra").innerText =
+            `Weight: ${product.weight_kg || "-"} kg | Color: ${product.color || "-"}`;
+        } else {
+          document.getElementById("product-container").innerHTML =
+            "<p>❌ Product not found.</p>";
+        }
+      } catch (error) {
+        console.error("Error fetching product:", error);
+        document.getElementById("product-container").innerHTML =
+          "<p>⚠️ Error loading product details.</p>";
+      }
+    }
+
+    window.onload = loadProduct;
+  </script>
+
+  <style>
+    body {
+      font-family: "Segoe UI", sans-serif;
+      background: #f9fafb;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      max-width: 900px;
+      margin: 40px auto;
+      background: #fff;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      display: flex;
+      gap: 30px;
+    }
+    .product-image {
+      flex: 1;
+    }
+    .product-image img {
+      width: 100%;
+      border-radius: 12px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+    }
+    .product-details {
+      flex: 2;
+    }
+    h1 {
+      margin-top: 0;
+      font-size: 28px;
+      color: #333;
+    }
+    .price {
+      font-size: 22px;
+      font-weight: bold;
+      color: #2e7d32;
+      margin: 10px 0;
+    }
+    .category {
+      font-size: 14px;
+      color: #888;
+      margin-bottom: 20px;
+    }
+    .desc {
+      font-size: 16px;
+      line-height: 1.6;
+      color: #444;
+    }
+    .meta {
+      margin-top: 20px;
+      font-size: 14px;
+      color: #666;
+    }
+    .stock {
+      margin-top: 10px;
+      font-size: 16px;
+      font-weight: bold;
+      color: #0277bd;
+    }
+    button {
+      margin-top: 20px;
+      padding: 12px 24px;
+      font-size: 16px;
+      background: #1976d2;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #1565c0;
+    }
+  </style>
+</head>
+<body>
+  <div class="container" id="product-container">
+    <div class="product-image">
+      <img id="productImage" src="" alt="Product Image" />
+    </div>
+    <div class="product-details">
+      <h1 id="productName">Loading...</h1>
+      <div class="price" id="productPrice"></div>
+      <div class="category" id="productCategory"></div>
+      <p class="desc" id="productDesc"></p>
+      <div class="stock" id="productStock"></div>
+      <div class="meta">SKU: <span id="productSKU"></span></div>
+      <div class="meta" id="productExtra"></div>
+      <button>Add to Cart</button>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us - AmaKart</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .about-hero {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            color: white;
+            padding: 4rem 0;
+            text-align: center;
+        }
+        
+        .about-hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+        
+        .about-hero p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .about-content {
+            padding: 4rem 0;
+        }
+        
+        .about-section {
+            margin-bottom: 4rem;
+        }
+        
+        .about-section h2 {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: #333;
+        }
+        
+        .about-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+        
+        .about-card {
+            background: white;
+            border-radius: 10px;
+            padding: 2rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        
+        .about-card h3 {
+            color: #e74c3c;
+            margin-bottom: 1rem;
+        }
+        
+        .about-card p {
+            color: #666;
+            line-height: 1.6;
+        }
+        
+        .developer-info {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+        
+        .developer-card {
+            display: grid;
+            grid-template-columns: 200px 1fr;
+            gap: 2rem;
+            align-items: center;
+        }
+        
+        .developer-avatar {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+            color: white;
+        }
+        
+        .developer-details h3 {
+            color: #333;
+            margin-bottom: 1rem;
+        }
+        
+        .developer-details p {
+            color: #666;
+            margin-bottom: 1rem;
+            line-height: 1.6;
+        }
+        
+        .developer-skills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+        
+        .skill-tag {
+            background: #e74c3c;
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 15px;
+            font-size: 0.9rem;
+        }
+        
+        .contact-info {
+            background: white;
+            border-radius: 10px;
+            padding: 2rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+        
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .contact-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: #e74c3c;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+        
+        .contact-details h4 {
+            margin-bottom: 0.25rem;
+            color: #333;
+        }
+        
+        .contact-details p {
+            margin: 0;
+            color: #666;
+        }
+        
+        @media (max-width: 768px) {
+            .about-hero h1 {
+                font-size: 2rem;
+            }
+            
+            .developer-card {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+            
+            .developer-avatar {
+                margin: 0 auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Fixed Disclaimer Bar -->
+    <div class="disclaimer-bar">
+        This is a demo portfolio website. All data is for educational purposes only and not for commercial use.
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Header -->
+        <header class="header">
+            <nav class="navbar">
+                <a href="home.html" class="logo">AmaKart</a>
+                
+                <ul class="nav-links">
+                    <li><a href="home.html">Home</a></li>
+                    <li><a href="catalog.html">Catalog</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+                
+                <div class="search-bar">
+                    <input type="text" id="search-input" placeholder="Search for products...">
+                    <button onclick="performSearch()">Search</button>
+                </div>
+                
+                <div class="user-actions">
+                    <a href="wishlist.html" class="btn btn-outline">
+                        Wishlist (<span id="wishlist-count">0</span>)
+                    </a>
+                    <a href="cart.html" class="btn btn-outline">
+                        Cart (<span id="cart-count">0</span>)
+                    </a>
+                    <a href="signin.html" class="btn btn-primary" id="login-btn">Sign In</a>
+                    <a href="account.html" class="btn btn-secondary" id="user-menu" style="display: none;">My Account</a>
+                    <button onclick="AmaKart.signOutUser()" class="btn btn-outline" id="logout-btn" style="display: none;">Sign Out</button>
+                </div>
+            </nav>
+        </header>
+
+        <!-- About Hero -->
+        <section class="about-hero">
+            <div class="container">
+                <h1>About AmaKart</h1>
+                <p>A modern e-commerce platform built as a portfolio project to showcase web development skills and best practices.</p>
+            </div>
+        </section>
+
+        <!-- About Content -->
+        <section class="about-content">
+            <div class="container">
+                <!-- Project Overview -->
+                <div class="about-section">
+                    <h2>Project Overview</h2>
+                    <div class="about-grid">
+                        <div class="about-card">
+                            <h3>🎯 Purpose</h3>
+                            <p>This is a demo portfolio website created to demonstrate modern web development skills, including responsive design, user authentication, and e-commerce functionality.</p>
+                        </div>
+                        <div class="about-card">
+                            <h3>🛠️ Technology</h3>
+                            <p>Built using HTML5, CSS3, JavaScript (ES6+), and Firebase for backend services. Features modern responsive design and security best practices.</p>
+                        </div>
+                        <div class="about-card">
+                            <h3>🔒 Security</h3>
+                            <p>Implements industry-standard security measures including data encryption, secure authentication, and protection against common web vulnerabilities.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Features -->
+                <div class="about-section">
+                    <h2>Key Features</h2>
+                    <div class="about-grid">
+                        <div class="about-card">
+                            <h3>🛒 E-commerce</h3>
+                            <p>Complete shopping experience with product catalog, cart management, wishlist, and multi-step checkout process.</p>
+                        </div>
+                        <div class="about-card">
+                            <h3>👤 User Management</h3>
+                            <p>User registration, authentication, account management, and order history tracking.</p>
+                        </div>
+                        <div class="about-card">
+                            <h3>📱 Responsive Design</h3>
+                            <p>Mobile-first approach ensuring optimal experience across all devices and screen sizes.</p>
+                        </div>
+                        <div class="about-card">
+                            <h3>🔍 Search & Filter</h3>
+                            <p>Advanced product search and filtering capabilities with real-time results.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Developer Information -->
+                <div class="about-section">
+                    <h2>Developer Information</h2>
+                    <div class="developer-info">
+                        <div class="developer-card">
+                            <div class="developer-avatar">👨‍💻</div>
+                            <div class="developer-details">
+                                <h3>Portfolio Developer</h3>
+                                <p>This website was created as a comprehensive portfolio project to showcase modern web development skills and best practices. The project demonstrates proficiency in frontend development, user experience design, and security implementation.</p>
+                                <p>The developer has implemented industry-standard practices including responsive design, secure authentication, data validation, and user-friendly interfaces. This project serves as a demonstration of full-stack web development capabilities.</p>
+                                <div class="developer-skills">
+                                    <span class="skill-tag">HTML5</span>
+                                    <span class="skill-tag">CSS3</span>
+                                    <span class="skill-tag">JavaScript</span>
+                                    <span class="skill-tag">Firebase</span>
+                                    <span class="skill-tag">Responsive Design</span>
+                                    <span class="skill-tag">Security</span>
+                                    <span class="skill-tag">UX/UI</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Contact Information -->
+                <div class="about-section">
+                    <h2>Contact Information</h2>
+                    <div class="contact-info">
+                        <div class="contact-grid">
+                            <div class="contact-item">
+                                <div class="contact-icon">📧</div>
+                                <div class="contact-details">
+                                    <h4>Email</h4>
+                                    <p>developer@amakart-demo.com</p>
+                                </div>
+                            </div>
+                            <div class="contact-item">
+                                <div class="contact-icon">🌐</div>
+                                <div class="contact-details">
+                                    <h4>Website</h4>
+                                    <p>www.amakart-demo.com</p>
+                                </div>
+                            </div>
+                            <div class="contact-item">
+                                <div class="contact-icon">💼</div>
+                                <div class="contact-details">
+                                    <h4>LinkedIn</h4>
+                                    <p>linkedin.com/in/amakart-developer</p>
+                                </div>
+                            </div>
+                            <div class="contact-item">
+                                <div class="contact-icon">🐙</div>
+                                <div class="contact-details">
+                                    <h4>GitHub</h4>
+                                    <p>github.com/amakart-developer</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Disclaimer -->
+                <div class="about-section">
+                    <div class="alert alert-warning">
+                        <h3>Important Disclaimer</h3>
+                        <p><strong>This is a demo portfolio website.</strong> All data, products, and transactions are for educational and demonstration purposes only. No real commercial transactions occur, and no actual products are sold through this platform.</p>
+                        <p>The website showcases modern web development practices, security implementations, and user experience design. It is intended to demonstrate technical skills and should not be used for actual e-commerce purposes.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="home.html">Home</a></li>
+                        <li><a href="catalog.html">Catalog</a></li>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Customer Service</h3>
+                    <ul>
+                        <li><a href="customerservice.html">Help Center</a></li>
+                        <li><a href="customerservice.html">Shipping Info</a></li>
+                        <li><a href="customerservice.html">Returns</a></li>
+                        <li><a href="customerservice.html">Track Order</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Account</h3>
+                    <ul>
+                        <li><a href="signin.html">Sign In</a></li>
+                        <li><a href="register.html">Create Account</a></li>
+                        <li><a href="account.html">My Account</a></li>
+                        <li><a href="orders.html">Order History</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Connect</h3>
+                    <ul>
+                        <li><a href="#">Facebook</a></li>
+                        <li><a href="#">Twitter</a></li>
+                        <li><a href="#">Instagram</a></li>
+                        <li><a href="#">LinkedIn</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 AmaKart. This is a demo portfolio website for educational purposes only.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script type="module" src="shared.js"></script>
+    <script src="about.js"></script>
+</body>
+</html>

@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Service - AmaKart</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .service-hero {
+            background: linear-gradient(135deg, #27ae60, #2ecc71);
+            color: white;
+            padding: 4rem 0;
+            text-align: center;
+        }
+        
+        .service-hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+        
+        .service-hero p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .service-content {
+            padding: 4rem 0;
+        }
+        
+        .service-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+        
+        .service-card {
+            background: white;
+            border-radius: 10px;
+            padding: 2rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+        
+        .service-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .service-card h3 {
+            color: #27ae60;
+            margin-bottom: 1rem;
+        }
+        
+        .service-card p {
+            color: #666;
+            margin-bottom: 1.5rem;
+        }
+        
+        .service-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+        
+        .help-section {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+        
+        .help-tabs {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+        
+        .help-tab {
+            padding: 0.75rem 1.5rem;
+            border: 2px solid #ddd;
+            background: white;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .help-tab.active {
+            border-color: #27ae60;
+            background: #27ae60;
+            color: white;
+        }
+        
+        .help-content {
+            display: none;
+        }
+        
+        .help-content.active {
+            display: block;
+        }
+        
+        .help-item {
+            background: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .help-item h4 {
+            color: #333;
+            margin-bottom: 0.5rem;
+        }
+        
+        .help-item p {
+            color: #666;
+            margin: 0;
+        }
+        
+        .contact-support {
+            background: white;
+            border-radius: 10px;
+            padding: 2rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        
+        .support-methods {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+        
+        .support-method {
+            padding: 1.5rem;
+            border: 2px solid #eee;
+            border-radius: 10px;
+            transition: border-color 0.3s ease;
+        }
+        
+        .support-method:hover {
+            border-color: #27ae60;
+        }
+        
+        .support-method h4 {
+            color: #333;
+            margin-bottom: 1rem;
+        }
+        
+        .support-method p {
+            color: #666;
+            margin-bottom: 1rem;
+        }
+        
+        .support-icon {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+        
+        @media (max-width: 768px) {
+            .service-hero h1 {
+                font-size: 2rem;
+            }
+            
+            .help-tabs {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Fixed Disclaimer Bar -->
+    <div class="disclaimer-bar">
+        This is a demo portfolio website. All data is for educational purposes only and not for commercial use.
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Header -->
+        <header class="header">
+            <nav class="navbar">
+                <a href="home.html" class="logo">AmaKart</a>
+                
+                <ul class="nav-links">
+                    <li><a href="home.html">Home</a></li>
+                    <li><a href="catalog.html">Catalog</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+                
+                <div class="search-bar">
+                    <input type="text" id="search-input" placeholder="Search for products...">
+                    <button onclick="performSearch()">Search</button>
+                </div>
+                
+                <div class="user-actions">
+                    <a href="wishlist.html" class="btn btn-outline">
+                        Wishlist (<span id="wishlist-count">0</span>)
+                    </a>
+                    <a href="cart.html" class="btn btn-outline">
+                        Cart (<span id="cart-count">0</span>)
+                    </a>
+                    <a href="signin.html" class="btn btn-primary" id="login-btn">Sign In</a>
+                    <a href="account.html" class="btn btn-secondary" id="user-menu" style="display: none;">My Account</a>
+                    <button onclick="AmaKart.signOutUser()" class="btn btn-outline" id="logout-btn" style="display: none;">Sign Out</button>
+                </div>
+            </nav>
+        </header>
+
+        <!-- Service Hero -->
+        <section class="service-hero">
+            <div class="container">
+                <h1>Customer Service</h1>
+                <p>We're here to help you with any questions or concerns. Find answers to common questions or get in touch with our support team.</p>
+            </div>
+        </section>
+
+        <!-- Service Content -->
+        <section class="service-content">
+            <div class="container">
+                <!-- Service Cards -->
+                <div class="service-grid">
+                    <div class="service-card">
+                        <div class="service-icon">📞</div>
+                        <h3>24/7 Support</h3>
+                        <p>Get help anytime with our round-the-clock customer support team.</p>
+                        <button class="btn btn-primary" onclick="showSupportMethod('phone')">Call Now</button>
+                    </div>
+                    
+                    <div class="service-card">
+                        <div class="service-icon">💬</div>
+                        <h3>Live Chat</h3>
+                        <p>Chat with our support team in real-time for instant assistance.</p>
+                        <button class="btn btn-primary" onclick="showSupportMethod('chat')">Start Chat</button>
+                    </div>
+                    
+                    <div class="service-card">
+                        <div class="service-icon">📧</div>
+                        <h3>Email Support</h3>
+                        <p>Send us an email and we'll respond within 24 hours.</p>
+                        <button class="btn btn-primary" onclick="showSupportMethod('email')">Send Email</button>
+                    </div>
+                </div>
+
+                <!-- Help Section -->
+                <div class="help-section">
+                    <h2 class="text-center mb-4">Help Center</h2>
+                    
+                    <div class="help-tabs">
+                        <div class="help-tab active" onclick="showHelpTab('shipping')">Shipping</div>
+                        <div class="help-tab" onclick="showHelpTab('returns')">Returns</div>
+                        <div class="help-tab" onclick="showHelpTab('account')">Account</div>
+                        <div class="help-tab" onclick="showHelpTab('payment')">Payment</div>
+                        <div class="help-tab" onclick="showHelpTab('technical')">Technical</div>
+                    </div>
+                    
+                    <!-- Shipping Help -->
+                    <div class="help-content active" id="shipping-help">
+                        <div class="help-item">
+                            <h4>How long does shipping take?</h4>
+                            <p>Standard shipping takes 3-5 business days. Express shipping is available for 1-2 business days.</p>
+                        </div>
+                        <div class="help-item">
+                            <h4>Do you ship internationally?</h4>
+                            <p>Currently, we only ship within the United States. International shipping may be available in the future.</p>
+                        </div>
+                        <div class="help-item">
+                            <h4>How can I track my order?</h4>
+                            <p>You can track your order by logging into your account and viewing your order history, or by using the tracking number sent to your email.</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Returns Help -->
+                    <div class="help-content" id="returns-help">
+                        <div class="help-item">
+                            <h4>What is your return policy?</h4>
+                            <p>We offer a 30-day return policy for most items. Items must be in original condition with tags attached.</p>
+                        </div>
+                        <div class="help-item">
+                            <h4>How do I return an item?</h4>
+                            <p>You can initiate a return through your account dashboard or by contacting customer service. We'll provide you with a return label.</p>
+                        </div>
+                        <div class="help-item">
+                            <h4>When will I receive my refund?</h4>
+                            <p>Refunds are processed within 5-7 business days after we receive your returned item.</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Account Help -->
+                    <div class="help-content" id="account-help">
+                        <div class="help-item">
+                            <h4>How do I create an account?</h4>
+                            <p>Click the "Sign In" button in the top right corner, then select "Create Account" to register for a new account.</p>
+                        </div>
+                        <div class="help-item">
+                            <h4>I forgot my password. What should I do?</h4>
+                            <p>Use the "Forgot Password" link on the sign-in page. We'll send you instructions to reset your password.</p>
+                        </div>
+                        <div class="help-item">
+                            <h4>How do I update my account information?</h4>
+                            <p>Log into your account and go to "Account Settings" to update your personal information, addresses, and preferences.</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Payment Help -->
+                    <div class="help-content" id="payment-help">
+                        <div class="help-item">
+                            <h4>What payment methods do you accept?</h4>
+                            <p>We accept all major credit cards, PayPal, Apple Pay, and Google Pay for your convenience.</p>
+                        </div>
+                        <div class="help-item">
+                            <h4>Is my payment information secure?</h4>
+                            <p>Yes, we use industry-standard encryption and security measures to protect your payment information.</p>
+                        </div>
+                        <div class="help-item">
+                            <h4>Can I save my payment information?</h4>
+                            <p>Yes, you can save your payment methods securely in your account for faster checkout in the future.</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Technical Help -->
+                    <div class="help-content" id="technical-help">
+                        <div class="help-item">
+                            <h4>I'm having trouble with the website. What should I do?</h4>
+                            <p>Try refreshing the page or clearing your browser cache. If the problem persists, contact our technical support team.</p>
+                        </div>
+                        <div class="help-item">
+                            <h4>Is this website mobile-friendly?</h4>
+                            <p>Yes, our website is fully responsive and optimized for mobile devices, tablets, and desktop computers.</p>
+                        </div>
+                        <div class="help-item">
+                            <h4>What browsers are supported?</h4>
+                            <p>We support all modern browsers including Chrome, Firefox, Safari, and Edge. We recommend using the latest version for the best experience.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Contact Support -->
+                <div class="contact-support">
+                    <h2>Still Need Help?</h2>
+                    <p>If you couldn't find the answer you're looking for, our support team is here to help.</p>
+                    
+                    <div class="support-methods">
+                        <div class="support-method">
+                            <div class="support-icon">📞</div>
+                            <h4>Phone Support</h4>
+                            <p>Call us at +1 (555) 123-4567</p>
+                            <p><small>Available 24/7</small></p>
+                        </div>
+                        
+                        <div class="support-method">
+                            <div class="support-icon">💬</div>
+                            <h4>Live Chat</h4>
+                            <p>Chat with our support team</p>
+                            <p><small>Available 9 AM - 9 PM EST</small></p>
+                        </div>
+                        
+                        <div class="support-method">
+                            <div class="support-icon">📧</div>
+                            <h4>Email Support</h4>
+                            <p>Send us an email at support@amakart-demo.com</p>
+                            <p><small>Response within 24 hours</small></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="home.html">Home</a></li>
+                        <li><a href="catalog.html">Catalog</a></li>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Customer Service</h3>
+                    <ul>
+                        <li><a href="customerservice.html">Help Center</a></li>
+                        <li><a href="customerservice.html">Shipping Info</a></li>
+                        <li><a href="customerservice.html">Returns</a></li>
+                        <li><a href="customerservice.html">Track Order</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Account</h3>
+                    <ul>
+                        <li><a href="signin.html">Sign In</a></li>
+                        <li><a href="register.html">Create Account</a></li>
+                        <li><a href="account.html">My Account</a></li>
+                        <li><a href="orders.html">Order History</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Connect</h3>
+                    <ul>
+                        <li><a href="#">Facebook</a></li>
+                        <li><a href="#">Twitter</a></li>
+                        <li><a href="#">Instagram</a></li>
+                        <li><a href="#">LinkedIn</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 AmaKart. This is a demo portfolio website for educational purposes only.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script type="module" src="shared.js"></script>
+    <script src="customerservice.js"></script>
+</body>
+</html>

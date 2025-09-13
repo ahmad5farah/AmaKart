@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Product Catalog Upload</title>
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js";
+    import { getFirestore, doc, writeBatch } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js";
+
+    // Your Firebase config
+    const firebaseConfig = {
+      apiKey: "AIzaSyD-ZeUiuD_laxz-50Kc5vOm-YafSoVHiYQ",
+      authDomain: "amakart-demo.firebaseapp.com",
+      projectId: "amakart-demo",
+      storageBucket: "amakart-demo.firebasestorage.app",
+      messagingSenderId: "481039794482",
+      appId: "1:481039794482:web:ee73c35d47383fe133572b",
+      measurementId: "G-7JBDL6X9F4"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    window.uploadToFirebase = async function () {
+      const fileInput = document.getElementById("fileInput");
+      const file = fileInput.files[0];
+
+      if (!file) {
+        alert("Please select a JSON file first!");
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = async function (event) {
+        try {
+          const rawData = JSON.parse(event.target.result);
+
+          // Convert object {prod_1:{}, prod_2:{}, ...} into array
+          const data = Object.entries(rawData).map(([id, product]) => ({
+            ...product,
+            docId: id
+          }));
+
+          const total = data.length;
+          let uploaded = 0;
+          let pauseDuration = 5000; // Default 5 seconds
+          let pauseTimer = null;
+
+          for (let i = 0; i < total; i += 500) {
+            const batch = writeBatch(db);
+            const chunk = data.slice(i, i + 500);
+
+            chunk.forEach((product) => {
+              const docRef = doc(db, "products", product.docId);
+              batch.set(docRef, product);
+            });
+
+            await batch.commit(); // upload this batch
+            uploaded += chunk.length;
+
+            // Update progress bar
+            const percent = Math.round((uploaded / total) * 100);
+            document.getElementById("progressBar").value = percent;
+            document.getElementById("progressText").innerText =
+              `Uploaded ${uploaded} / ${total} (${percent}%)`;
+
+            // Set pause duration based on uploaded document count
+            if (uploaded % 2000 === 0) {
+              pauseDuration = 10000; // 10 seconds
+              document.getElementById("pauseText").innerText = `Pausing for 10 seconds...`;
+            } else {
+              pauseDuration = 5000; // 5 seconds
+              document.getElementById("pauseText").innerText = `Pausing for 5 seconds...`;
+            }
+
+            // Start the countdown timer
+            await pauseWithTimer(pauseDuration);
+            document.getElementById("pauseText").innerText = `Resuming upload...`;
+          }
+
+          alert("✅ Upload completed successfully!");
+        } catch (err) {
+          console.error("Upload failed:", err);
+          alert("❌ Upload failed. Check console for details.");
+        }
+      };
+      reader.readAsText(file);
+    };
+
+    // Function to handle pause and show timer countdown
+    async function pauseWithTimer(ms) {
+      return new Promise((resolve) => {
+        let secondsRemaining = ms / 1000;
+        let timerInterval = setInterval(() => {
+          // Update the UI with remaining seconds
+          document.getElementById("pauseText").innerText = `Pausing for ${secondsRemaining} seconds...`;
+          secondsRemaining--;
+
+          // Stop the interval when the timer is done
+          if (secondsRemaining < 0) {
+            clearInterval(timerInterval);
+            resolve();
+          }
+        }, 1000); // Update every 1 second
+      });
+    }
+
+  </script>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+      background: #f5f7fa;
+    }
+    .container {
+      background: #fff;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0px 4px 12px rgba(0,0,0,0.1);
+      text-align: center;
+      width: 400px;
+    }
+    h1 {
+      margin-bottom: 20px;
+      font-size: 22px;
+      color: #333;
+    }
+    input[type="file"] {
+      margin: 20px 0;
+    }
+    button {
+      background: #4CAF50;
+      color: white;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    button:hover {
+      background: #45a049;
+    }
+    progress {
+      width: 100%;
+      height: 20px;
+      margin-top: 20px;
+    }
+    #progressText {
+      margin-top: 10px;
+      font-size: 14px;
+      color: #555;
+    }
+    #pauseText {
+      margin-top: 10px;
+      font-size: 14px;
+      color: #888;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>📦 Product Catalog Upload</h1>
+    <input type="file" id="fileInput" accept=".json" />
+    <br />
+    <button onclick="uploadToFirebase()">Upload to Firebase</button>
+    <progress id="progressBar" value="0" max="100"></progress>
+    <div id="progressText">No upload yet</div>
+    <div id="pauseText"></div>
+  </div>
+</body>
+</html>

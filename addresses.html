@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shipping Address - AmaKart</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .checkout-progress {
+            display: flex;
+            justify-content: center;
+            margin: 2rem 0;
+        }
+        
+        .progress-step {
+            display: flex;
+            align-items: center;
+            margin: 0 1rem;
+        }
+        
+        .step-number {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: #ddd;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 0.5rem;
+            font-weight: bold;
+        }
+        
+        .step-number.active {
+            background: #e74c3c;
+        }
+        
+        .step-number.completed {
+            background: #27ae60;
+        }
+        
+        .address-form {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .address-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+        
+        .address-type {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        
+        .address-type input[type="radio"] {
+            margin-right: 0.5rem;
+        }
+        
+        .saved-addresses {
+            margin-bottom: 2rem;
+        }
+        
+        .address-card {
+            border: 2px solid #eee;
+            border-radius: 10px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            cursor: pointer;
+            transition: border-color 0.3s ease;
+        }
+        
+        .address-card:hover {
+            border-color: #e74c3c;
+        }
+        
+        .address-card.selected {
+            border-color: #e74c3c;
+            background: #fff5f5;
+        }
+        
+        .address-card h4 {
+            margin-bottom: 0.5rem;
+            color: #333;
+        }
+        
+        .address-card p {
+            margin: 0.25rem 0;
+            color: #666;
+        }
+        
+        .address-actions {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+        
+        .address-actions button {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+        
+        .edit-btn {
+            background: #3498db;
+            color: white;
+        }
+        
+        .delete-btn {
+            background: #e74c3c;
+            color: white;
+        }
+        
+        .checkout-actions {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 2rem;
+        }
+        
+        @media (max-width: 768px) {
+            .address-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .checkout-actions {
+                flex-direction: column;
+                gap: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Fixed Disclaimer Bar -->
+    <div class="disclaimer-bar">
+        This is a demo portfolio website. All data is for educational purposes only and not for commercial use.
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Header -->
+        <header class="header">
+            <nav class="navbar">
+                <a href="home.html" class="logo">AmaKart</a>
+                
+                <ul class="nav-links">
+                    <li><a href="home.html">Home</a></li>
+                    <li><a href="catalog.html">Catalog</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+                
+                <div class="user-actions">
+                    <a href="cart.html" class="btn btn-outline">
+                        Cart (<span id="cart-count">0</span>)
+                    </a>
+                    <a href="signin.html" class="btn btn-primary" id="login-btn">Sign In</a>
+                    <a href="account.html" class="btn btn-secondary" id="user-menu" style="display: none;">My Account</a>
+                    <button onclick="AmaKart.signOutUser()" class="btn btn-outline" id="logout-btn" style="display: none;">Sign Out</button>
+                </div>
+            </nav>
+        </header>
+
+        <!-- Checkout Progress -->
+        <div class="checkout-progress">
+            <div class="progress-step">
+                <div class="step-number active">1</div>
+                <span>Address</span>
+            </div>
+            <div class="progress-step">
+                <div class="step-number">2</div>
+                <span>Payment</span>
+            </div>
+            <div class="progress-step">
+                <div class="step-number">3</div>
+                <span>Review</span>
+            </div>
+        </div>
+
+        <!-- Address Section -->
+        <section class="container">
+            <h1 class="text-center mb-4">Shipping Address</h1>
+            
+            <!-- Demo Alert -->
+            <div class="alert alert-warning">
+                <strong>Demo Notice:</strong> This is a demo website. Addresses entered here are for educational purposes only and will be stored for demonstration purposes. No real shipping will occur.
+            </div>
+            
+            <div class="address-form">
+                <!-- Address Type Selection -->
+                <div class="address-type">
+                    <label>
+                        <input type="radio" name="addressType" value="shipping" checked>
+                        Shipping Address
+                    </label>
+                    <label>
+                        <input type="radio" name="addressType" value="billing">
+                        Billing Address
+                    </label>
+                </div>
+                
+                <!-- Saved Addresses -->
+                <div class="saved-addresses" id="saved-addresses">
+                    <h3>Saved Addresses</h3>
+                    <div id="addresses-list">
+                        <!-- Saved addresses will be loaded here -->
+                    </div>
+                    <button class="btn btn-outline" onclick="showAddressForm()">Add New Address</button>
+                </div>
+                
+                <!-- Address Form -->
+                <div class="card" id="address-form" style="display: none;">
+                    <div class="card-header">
+                        <h3>Add New Address</h3>
+                    </div>
+                    <div class="card-body">
+                        <form id="new-address-form">
+                            <div class="address-grid">
+                                <div class="form-group">
+                                    <label for="firstName" class="form-label">First Name</label>
+                                    <input type="text" id="firstName" name="firstName" class="form-input" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="lastName" class="form-label">Last Name</label>
+                                    <input type="text" id="lastName" name="lastName" class="form-input" required>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="address" class="form-label">Street Address</label>
+                                <input type="text" id="address" name="address" class="form-input" required>
+                            </div>
+                            
+                            <div class="address-grid">
+                                <div class="form-group">
+                                    <label for="city" class="form-label">City</label>
+                                    <input type="text" id="city" name="city" class="form-input" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="state" class="form-label">State</label>
+                                    <input type="text" id="state" name="state" class="form-input" required>
+                                </div>
+                            </div>
+                            
+                            <div class="address-grid">
+                                <div class="form-group">
+                                    <label for="zipCode" class="form-label">ZIP Code</label>
+                                    <input type="text" id="zipCode" name="zipCode" class="form-input" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="phone" class="form-label">Phone Number</label>
+                                    <input type="tel" id="phone" name="phone" class="form-input" required>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label">
+                                    <input type="checkbox" id="saveAddress" name="saveAddress" checked>
+                                    Save this address for future use
+                                </label>
+                            </div>
+                            
+                            <div class="d-flex gap-2">
+                                <button type="submit" class="btn btn-primary">Save Address</button>
+                                <button type="button" class="btn btn-outline" onclick="hideAddressForm()">Cancel</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                
+                <!-- Checkout Actions -->
+                <div class="checkout-actions">
+                    <a href="cart.html" class="btn btn-outline">Back to Cart</a>
+                    <button class="btn btn-primary" onclick="proceedToPayment()" id="continue-btn" disabled>
+                        Continue to Payment
+                    </button>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="home.html">Home</a></li>
+                        <li><a href="catalog.html">Catalog</a></li>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Customer Service</h3>
+                    <ul>
+                        <li><a href="customerservice.html">Help Center</a></li>
+                        <li><a href="customerservice.html">Shipping Info</a></li>
+                        <li><a href="customerservice.html">Returns</a></li>
+                        <li><a href="customerservice.html">Track Order</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Account</h3>
+                    <ul>
+                        <li><a href="signin.html">Sign In</a></li>
+                        <li><a href="register.html">Create Account</a></li>
+                        <li><a href="account.html">My Account</a></li>
+                        <li><a href="orders.html">Order History</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Connect</h3>
+                    <ul>
+                        <li><a href="#">Facebook</a></li>
+                        <li><a href="#">Twitter</a></li>
+                        <li><a href="#">Instagram</a></li>
+                        <li><a href="#">LinkedIn</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 AmaKart. This is a demo portfolio website for educational purposes only.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script type="module" src="shared.js"></script>
+    <script src="addresses.js"></script>
+</body>
+</html>

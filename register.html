@@ -1,0 +1,1199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Account - AmaKart</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Enhanced Register Page Styles */
+        .register-container {
+            max-width: 700px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        .register-card {
+            background: #ffffff;
+            border-radius: 16px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            border: 1px solid #e5e7eb;
+        }
+
+        .register-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 3rem 2rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .register-header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .register-header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin: 0 0 0.5rem 0;
+            position: relative;
+            z-index: 1;
+        }
+
+        .register-header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            margin: 0;
+            position: relative;
+            z-index: 1;
+        }
+
+        .register-body {
+            padding: 3rem 2rem;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+
+        .form-label {
+            display: block;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 0.5rem;
+            font-size: 0.95rem;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 1rem 1.25rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: #fafbfc;
+            box-sizing: border-box;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #667eea;
+            background: #ffffff;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .form-input.error {
+            border-color: #ef4444;
+            background: #fef2f2;
+        }
+
+        .form-input.success {
+            border-color: #10b981;
+            background: #f0fdf4;
+        }
+
+        .password-container {
+            position: relative;
+        }
+
+        .password-toggle {
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #6b7280;
+            font-size: 0.9rem;
+            padding: 0.5rem;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+        }
+
+        .password-toggle:hover {
+            background: #f3f4f6;
+            color: #374151;
+        }
+
+        .password-strength {
+            margin-top: 0.5rem;
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            transition: all 0.3s ease;
+        }
+
+        .strength-meter {
+            display: flex;
+            gap: 4px;
+            margin-bottom: 0.5rem;
+        }
+
+        .strength-bar {
+            height: 4px;
+            flex: 1;
+            background: #e5e7eb;
+            border-radius: 2px;
+            transition: all 0.3s ease;
+        }
+
+        .strength-bar.active {
+            background: var(--strength-color);
+        }
+
+        .strength-text {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--strength-color);
+            margin-bottom: 0.25rem;
+        }
+
+        .strength-requirements {
+            font-size: 0.8rem;
+            color: #6b7280;
+        }
+
+        .strength-very-weak { --strength-color: #ef4444; }
+        .strength-weak { --strength-color: #f97316; }
+        .strength-fair { --strength-color: #eab308; }
+        .strength-good { --strength-color: #22c55e; }
+        .strength-strong { --strength-color: #16a34a; }
+        .strength-very-strong { --strength-color: #15803d; }
+
+        .checkbox-group {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+            padding: 1rem;
+            background: #f8fafc;
+            border-radius: 12px;
+            border: 2px solid #e5e7eb;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .checkbox-group:hover {
+            border-color: #cbd5e1;
+            background: #f1f5f9;
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            accent-color: #667eea;
+            margin: 0;
+            cursor: pointer;
+        }
+
+        .checkbox-label {
+            flex: 1;
+            font-size: 0.95rem;
+            color: #374151;
+            line-height: 1.4;
+            cursor: pointer;
+            margin: 0;
+        }
+
+        .register-btn {
+            width: 100%;
+            padding: 1.25rem 2rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .register-btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+        }
+
+        .register-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .register-btn .loading-spinner {
+            display: none;
+            width: 20px;
+            height: 20px;
+            border: 2px solid transparent;
+            border-top: 2px solid white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-right: 0.5rem;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .register-btn.loading .loading-spinner {
+            display: inline-block;
+        }
+
+        .alert {
+            padding: 1rem 1.25rem;
+            border-radius: 12px;
+            margin-bottom: 1.5rem;
+            font-size: 0.95rem;
+            line-height: 1.4;
+        }
+
+        .alert-warning {
+            background: #fef3cd;
+            border: 1px solid #fbbf24;
+            color: #92400e;
+        }
+
+        .alert-error {
+            background: #fee2e2;
+            border: 1px solid #f87171;
+            color: #dc2626;
+        }
+
+        .alert-success {
+            background: #d1fae5;
+            border: 1px solid #34d399;
+            color: #065f46;
+        }
+
+        .error-message {
+            color: #ef4444;
+            font-size: 0.85rem;
+            margin-top: 0.5rem;
+            display: block;
+            opacity: 0;
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
+        }
+
+        .error-message.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .register-footer {
+            padding: 2rem;
+            background: #f8fafc;
+            text-align: center;
+            border-top: 1px solid #e5e7eb;
+        }
+
+        .register-footer p {
+            margin: 0;
+            color: #6b7280;
+            font-size: 0.95rem;
+        }
+
+        .register-footer a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .register-footer a:hover {
+            background: #667eea;
+            color: white;
+        }
+
+        .security-card {
+            margin-top: 2rem;
+            background: #ffffff;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e5e7eb;
+            overflow: hidden;
+        }
+
+        .security-header {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            padding: 1.5rem 2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .security-header h3 {
+            margin: 0;
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+
+        .security-body {
+            padding: 2rem;
+        }
+
+        .security-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .security-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            padding: 0.75rem 0;
+            color: #374151;
+            line-height: 1.5;
+        }
+
+        .security-list li:before {
+            content: "✓";
+            background: #10b981;
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            font-weight: bold;
+            flex-shrink: 0;
+            margin-top: 0.1rem;
+        }
+
+        /* Basic header and footer styles for demo */
+        .disclaimer-bar {
+            background: #dc2626;
+            color: white;
+            text-align: center;
+            padding: 0.5rem;
+            font-size: 0.9rem;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+        }
+
+        .main-content {
+            margin-top: 3rem;
+        }
+
+        .header {
+            background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 3rem;
+            z-index: 100;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #667eea;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+            margin: 0;
+            padding: 0;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #374151;
+            font-weight: 500;
+        }
+
+        .btn {
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .btn-outline {
+            border: 2px solid #667eea;
+            color: #667eea;
+        }
+
+        .footer {
+            background: #1f2937;
+            color: white;
+            margin-top: 4rem;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2rem;
+            padding: 3rem 0;
+        }
+
+        .footer-section h3 {
+            margin-bottom: 1rem;
+            color: #f9fafb;
+        }
+
+        .footer-section ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .footer-section li {
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-section a {
+            color: #d1d5db;
+            text-decoration: none;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid #374151;
+            padding: 1rem 0;
+            text-align: center;
+            color: #9ca3af;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .register-container {
+                margin: 1rem auto;
+                padding: 0 0.5rem;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .register-header {
+                padding: 2rem 1.5rem;
+            }
+
+            .register-header h1 {
+                font-size: 2rem;
+            }
+
+            .register-body, .security-body {
+                padding: 2rem 1.5rem;
+            }
+
+            .checkbox-group {
+                padding: 0.75rem;
+            }
+
+            .footer-content {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .navbar {
+                padding: 1rem;
+            }
+        }
+
+        /* Focus indicators for accessibility */
+        .form-input:focus-visible,
+        .checkbox-group:focus-within,
+        .register-btn:focus-visible {
+            outline: 2px solid #667eea;
+            outline-offset: 2px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Fixed Disclaimer Bar -->
+    <div class="disclaimer-bar">
+        This is a demo portfolio website. All data is for educational purposes only and not for commercial use.
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Header -->
+        <header class="header">
+            <nav class="navbar">
+                <a href="home.html" class="logo">AmaKart</a>
+                
+                <ul class="nav-links">
+                    <li><a href="home.html">Home</a></li>
+                    <li><a href="catalog.html">Catalog</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+                
+                <div class="user-actions">
+                    <a href="signin.html" class="btn btn-outline">Sign In</a>
+                </div>
+            </nav>
+        </header>
+
+        <!-- Registration Form -->
+        <div class="register-container">
+            <div class="register-card">
+                <div class="register-header">
+                    <h1>Create Your Account</h1>
+                    <p>Join AmaKart and start your shopping journey today!</p>
+                </div>
+                
+                <div class="register-body">
+                    <!-- Security Disclaimer -->
+                    <div class="alert alert-warning">
+                        <strong>Important:</strong> By creating an account, you agree that your details will be stored by the developer for educational purposes only and will not be distributed. We do not recommend creating an account unless you are interested in testing the website features.
+                    </div>
+
+                    <form id="register-form">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="firstName" class="form-label">First Name</label>
+                                <input type="text" id="firstName" name="firstName" class="form-input" required>
+                                <span class="error-message" id="firstName-error"></span>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="lastName" class="form-label">Last Name</label>
+                                <input type="text" id="lastName" name="lastName" class="form-input" required>
+                                <span class="error-message" id="lastName-error"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="email" class="form-label">Email Address</label>
+                            <input type="email" id="email" name="email" class="form-input" required>
+                            <span class="error-message" id="email-error"></span>
+                            <small style="color: #6b7280; font-size: 0.85rem;">We'll use this to send you order confirmations and updates.</small>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="phone" class="form-label">Phone Number (Optional)</label>
+                            <input type="tel" id="phone" name="phone" class="form-input" placeholder="+1 (555) 123-4567">
+                            <span class="error-message" id="phone-error"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="password" class="form-label">Password</label>
+                            <div class="password-container">
+                                <input type="password" id="password" name="password" class="form-input" required>
+                                <button type="button" class="password-toggle" id="password-toggle" onclick="togglePasswordVisibility()">
+                                    Show
+                                </button>
+                            </div>
+                            <div class="password-strength" id="password-strength" style="display: none;">
+                                <div class="strength-meter">
+                                    <div class="strength-bar" id="strength-1"></div>
+                                    <div class="strength-bar" id="strength-2"></div>
+                                    <div class="strength-bar" id="strength-3"></div>
+                                    <div class="strength-bar" id="strength-4"></div>
+                                    <div class="strength-bar" id="strength-5"></div>
+                                </div>
+                                <div class="strength-text" id="strength-text">Password Strength: Very Weak</div>
+                                <div class="strength-requirements" id="strength-requirements">
+                                    Password must be at least 8 characters with uppercase letter and number.
+                                </div>
+                            </div>
+                            <span class="error-message" id="password-error"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="confirmPassword" class="form-label">Confirm Password</label>
+                            <div class="password-container">
+                                <input type="password" id="confirmPassword" name="confirmPassword" class="form-input" required>
+                                <button type="button" class="password-toggle" id="confirm-password-toggle" onclick="toggleConfirmPasswordVisibility()">
+                                    Show
+                                </button>
+                            </div>
+                            <span class="error-message" id="confirmPassword-error"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="terms" class="checkbox-group">
+                                <input type="checkbox" id="terms" name="terms" required>
+                                <span class="checkbox-label">
+                                    I agree to the <a href="#" onclick="event.stopPropagation(); showTerms()" style="color: #667eea; text-decoration: underline;">Terms of Service</a> and <a href="#" onclick="event.stopPropagation(); showPrivacy()" style="color: #667eea; text-decoration: underline;">Privacy Policy</a>
+                                </span>
+                            </label>
+                            <span class="error-message" id="terms-error"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="newsletter" class="checkbox-group">
+                                <input type="checkbox" id="newsletter" name="newsletter">
+                                <span class="checkbox-label">
+                                    Subscribe to our newsletter for updates and special offers
+                                </span>
+                            </label>
+                        </div>
+
+                        <button type="submit" class="register-btn" id="register-btn">
+                            <span class="loading-spinner"></span>
+                            Create Account
+                        </button>
+                    </form>
+                </div>
+
+                <div class="register-footer">
+                    <p>Already have an account? <a href="signin.html">Sign In</a></p>
+                </div>
+            </div>
+
+            <!-- Security Information -->
+            <div class="security-card">
+                <div class="security-header">
+                    <span style="font-size: 1.5rem;">🔒</span>
+                    <h3>Security & Privacy</h3>
+                </div>
+                <div class="security-body">
+                    <ul class="security-list">
+                        <li>All data is encrypted using industry-standard security measures</li>
+                        <li>Your password is hashed and never stored in plain text</li>
+                        <li>We use TLS/SSL encryption for all data transmission</li>
+                        <li>This is a demo site - no real data is processed or stored</li>
+                        <li>Account creation is optional and for testing purposes only</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="home.html">Home</a></li>
+                        <li><a href="catalog.html">Catalog</a></li>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Customer Service</h3>
+                    <ul>
+                        <li><a href="customerservice.html">Help Center</a></li>
+                        <li><a href="customerservice.html">Shipping Info</a></li>
+                        <li><a href="customerservice.html">Returns</a></li>
+                        <li><a href="customerservice.html">Track Order</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Account</h3>
+                    <ul>
+                        <li><a href="signin.html">Sign In</a></li>
+                        <li><a href="register.html">Create Account</a></li>
+                        <li><a href="account.html">My Account</a></li>
+                        <li><a href="orders.html">Order History</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Connect</h3>
+                    <ul>
+                        <li><a href="#">Facebook</a></li>
+                        <li><a href="#">Twitter</a></li>
+                        <li><a href="#">Instagram</a></li>
+                        <li><a href="#">LinkedIn</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 AmaKart. This is a demo portfolio website for educational purposes only.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mock AmaKart object for demo purposes (replace with your actual shared.js)
+        window.AmaKart = {
+            checkPasswordStrength: function(password) {
+                if (!password) return { strength: "Very Weak", isValid: false };
+                
+                let score = 0;
+                if (password.length >= 8) score++;
+                if (/[A-Z]/.test(password)) score++;
+                if (/[0-9]/.test(password)) score++;
+                if (/[^A-Za-z0-9]/.test(password)) score++;
+                if (password.length >= 12) score++;
+                
+                const strengths = ["Very Weak", "Weak", "Fair", "Good", "Strong", "Very Strong"];
+                return {
+                    strength: strengths[score] || "Very Weak",
+                    isValid: score >= 3
+                };
+            },
+            
+            isValidEmail: function(email) {
+                return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+            },
+            
+            validateForm: function(data, fields) {
+                const errors = {};
+                let isValid = true;
+                
+                if (fields.includes('password') && data.password) {
+                    const result = this.checkPasswordStrength(data.password);
+                    if (!result.isValid) {
+                        errors.password = "Password must be at least 8 characters with uppercase letter and number";
+                        isValid = false;
+                    }
+                }
+                
+                return { isValid, errors };
+            },
+            
+            registerUser: function(email, password, userData) {
+                return new Promise((resolve) => {
+                    // Simulate API call
+                    setTimeout(() => {
+                        // Simple validation
+                        if (!email || !password) {
+                            resolve({ success: false, error: "Email and password required" });
+                            return;
+                        }
+                        
+                        // Check if user already exists (in real app, this would be server-side)
+                        const existingUsers = JSON.parse(localStorage.getItem('demo_users') || '[]');
+                        if (existingUsers.find(u => u.email === email)) {
+                            resolve({ success: false, error: "Email already registered" });
+                            return;
+                        }
+                        
+                        // Add user to demo storage
+                        const newUser = {
+                            id: Date.now(),
+                            email,
+                            ...userData,
+                            createdAt: new Date().toISOString()
+                        };
+                        existingUsers.push(newUser);
+                        localStorage.setItem('demo_users', JSON.stringify(existingUsers));
+                        
+                        resolve({ success: true, user: newUser });
+                    }, 1000);
+                });
+            }
+        };
+
+        // Enhanced Registration JavaScript
+        let passwordVisible = false;
+        let confirmPasswordVisible = false;
+
+        // Password visibility toggles
+        function togglePasswordVisibility() {
+            const passwordInput = document.getElementById('password');
+            const toggleBtn = document.getElementById('password-toggle');
+            
+            passwordVisible = !passwordVisible;
+            passwordInput.type = passwordVisible ? 'text' : 'password';
+            toggleBtn.textContent = passwordVisible ? 'Hide' : 'Show';
+        }
+
+        function toggleConfirmPasswordVisibility() {
+            const confirmPasswordInput = document.getElementById('confirmPassword');
+            const toggleBtn = document.getElementById('confirm-password-toggle');
+            
+            confirmPasswordVisible = !confirmPasswordVisible;
+            confirmPasswordInput.type = confirmPasswordVisible ? 'text' : 'password';
+            toggleBtn.textContent = confirmPasswordVisible ? 'Hide' : 'Show';
+        }
+
+        // Password strength indicator
+        function updatePasswordStrength(password) {
+            const strengthDiv = document.getElementById('password-strength');
+            const strengthText = document.getElementById('strength-text');
+            const strengthRequirements = document.getElementById('strength-requirements');
+            const strengthBars = document.querySelectorAll('.strength-bar');
+            
+            if (!password) {
+                strengthDiv.style.display = 'none';
+                return;
+            }
+            
+            strengthDiv.style.display = 'block';
+            
+            // Use AmaKart's password strength function
+            const result = window.AmaKart.checkPasswordStrength(password);
+            
+            // Reset bars
+            strengthBars.forEach(bar => {
+                bar.classList.remove('active');
+            });
+            
+            // Update strength class and bars
+            strengthDiv.className = `password-strength strength-${result.strength.toLowerCase().replace(' ', '-')}`;
+            
+            let activeBars = 0;
+            if (result.strength === "Very Weak") activeBars = 1;
+            else if (result.strength === "Weak") activeBars = 2;
+            else if (result.strength === "Fair") activeBars = 3;
+            else if (result.strength === "Good") activeBars = 4;
+            else if (result.strength === "Strong") activeBars = 5;
+            else if (result.strength === "Very Strong") activeBars = 5;
+            
+            for (let i = 0; i < activeBars; i++) {
+                strengthBars[i].classList.add('active');
+            }
+            
+            strengthText.textContent = `Password Strength: ${result.strength}`;
+            
+            if (result.isValid) {
+                strengthRequirements.textContent = "✓ Password meets all requirements";
+                strengthRequirements.style.color = "#10b981";
+            } else {
+                strengthRequirements.textContent = "Password must be at least 8 characters with uppercase, lowercase, number, and special character.";
+                strengthRequirements.style.color = "#6b7280";
+            }
+        }
+
+        // Show/hide error messages
+        function showError(fieldId, message) {
+            const field = document.getElementById(fieldId);
+            const errorSpan = document.getElementById(`${fieldId}-error`);
+            
+            if (field && errorSpan) {
+                field.classList.add('error');
+                field.classList.remove('success');
+                errorSpan.textContent = message;
+                errorSpan.classList.add('show');
+            }
+        }
+
+        function showSuccess(fieldId) {
+            const field = document.getElementById(fieldId);
+            const errorSpan = document.getElementById(`${fieldId}-error`);
+            
+            if (field && errorSpan) {
+                field.classList.remove('error');
+                field.classList.add('success');
+                errorSpan.textContent = '';
+                errorSpan.classList.remove('show');
+            }
+        }
+
+        function clearError(fieldId) {
+            const field = document.getElementById(fieldId);
+            const errorSpan = document.getElementById(`${fieldId}-error`);
+            
+            if (field && errorSpan) {
+                field.classList.remove('error', 'success');
+                errorSpan.textContent = '';
+                errorSpan.classList.remove('show');
+            }
+        }
+
+        // Form validation
+        function validateField(fieldId, value, rules = {}) {
+            clearError(fieldId);
+            
+            // Handle boolean values (checkboxes)
+            if (typeof value === 'boolean') {
+                if (rules.required && !value) {
+                    if (fieldId === 'terms') {
+                        showError(fieldId, 'You must agree to the Terms of Service and Privacy Policy');
+                    } else {
+                        showError(fieldId, `${fieldId.charAt(0).toUpperCase() + fieldId.slice(1)} is required`);
+                    }
+                    return false;
+                }
+                if (value) {
+                    showSuccess(fieldId);
+                }
+                return true;
+            }
+            
+            // Handle string values
+            const stringValue = value ? String(value).trim() : '';
+            
+            if (rules.required && !stringValue) {
+                showError(fieldId, `${fieldId.charAt(0).toUpperCase() + fieldId.slice(1)} is required`);
+                return false;
+            }
+            
+            if (fieldId === 'email' && stringValue && !window.AmaKart.isValidEmail(stringValue)) {
+                showError(fieldId, 'Please enter a valid email address');
+                return false;
+            }
+            
+            if (fieldId === 'password' && stringValue) {
+                const validation = window.AmaKart.validateForm({password: stringValue}, ['password']);
+                if (!validation.isValid && validation.errors.password) {
+                    showError(fieldId, validation.errors.password);
+                    return false;
+                }
+            }
+            
+            if (fieldId === 'confirmPassword' && stringValue) {
+                const password = document.getElementById('password').value;
+                if (stringValue !== password) {
+                    showError(fieldId, 'Passwords do not match');
+                    return false;
+                }
+            }
+            
+            if (stringValue) {
+                showSuccess(fieldId);
+            }
+            return true;
+        }
+
+        // Event listeners
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('register-form');
+            const passwordInput = document.getElementById('password');
+            const confirmPasswordInput = document.getElementById('confirmPassword');
+            const submitBtn = document.getElementById('register-btn');
+            
+            // Real-time password strength
+            passwordInput.addEventListener('input', function() {
+                updatePasswordStrength(this.value);
+                validateField('password', this.value);
+            });
+            
+            // Real-time validation
+            const fields = ['firstName', 'lastName', 'email', 'phone', 'confirmPassword'];
+            fields.forEach(fieldId => {
+                const field = document.getElementById(fieldId);
+                if (field) {
+                    field.addEventListener('blur', function() {
+                        const rules = { required: this.required };
+                        validateField(fieldId, this.value, rules);
+                    });
+                    
+                    field.addEventListener('input', function() {
+                        if (this.classList.contains('error')) {
+                            const rules = { required: this.required };
+                            validateField(fieldId, this.value, rules);
+                        }
+                    });
+                }
+            });
+            
+            // Confirm password validation
+            confirmPasswordInput.addEventListener('input', function() {
+                if (this.value) {
+                    validateField('confirmPassword', this.value);
+                }
+            });
+            
+            // Terms checkbox validation
+            document.getElementById('terms').addEventListener('change', function() {
+                validateField('terms', this.checked, { required: true });
+            });
+            
+            // Form submission
+            form.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                
+                // Show loading state
+                submitBtn.classList.add('loading');
+                submitBtn.disabled = true;
+                
+                try {
+                    // Get form data
+                    const formData = new FormData(form);
+                    const userData = {
+                        firstName: formData.get('firstName'),
+                        lastName: formData.get('lastName'),
+                        email: formData.get('email'),
+                        phone: formData.get('phone'),
+                        password: formData.get('password'),
+                        confirmPassword: formData.get('confirmPassword'),
+                        terms: formData.get('terms') === 'on',
+                        newsletter: formData.get('newsletter') === 'on'
+                    };
+                    
+                    // Validate all fields
+                    let isValid = true;
+                    isValid = validateField('firstName', userData.firstName, { required: true }) && isValid;
+                    isValid = validateField('lastName', userData.lastName, { required: true }) && isValid;
+                    isValid = validateField('email', userData.email, { required: true }) && isValid;
+                    isValid = validateField('password', userData.password, { required: true }) && isValid;
+                    isValid = validateField('confirmPassword', userData.confirmPassword, { required: true }) && isValid;
+                    isValid = validateField('terms', userData.terms, { required: true }) && isValid;
+                    
+                    if (!isValid) {
+                        throw new Error('Please fix the errors above');
+                    }
+                    
+                    // Register user with AmaKart
+                    const result = await window.AmaKart.registerUser(
+                        userData.email,
+                        userData.password,
+                        {
+                            firstName: userData.firstName,
+                            lastName: userData.lastName,
+                            phone: userData.phone,
+                            newsletter: userData.newsletter
+                        }
+                    );
+                    
+                    if (result.success) {
+                        // Show success message
+                        const successAlert = document.createElement('div');
+                        successAlert.className = 'alert alert-success';
+                        successAlert.innerHTML = '<strong>Success!</strong> Your account has been created. Signing you in...';
+                        
+                        const registerBody = document.querySelector('.register-body');
+                        registerBody.insertBefore(successAlert, registerBody.firstChild);
+                        
+                        // Auto sign in the user
+                        const currentUser = {
+                            id: result.user.id,
+                            email: result.user.email,
+                            firstName: result.user.firstName,
+                            lastName: result.user.lastName,
+                            phone: result.user.phone,
+                            newsletter: result.user.newsletter,
+                            loginTime: new Date().toISOString()
+                        };
+                        
+                        // Store user session
+                        localStorage.setItem('demo_current_user', JSON.stringify(currentUser));
+                        localStorage.setItem('demo_user_logged_in', 'true');
+                        
+                        // Redirect to home page or account page after successful registration and login
+                        setTimeout(() => {
+                            window.location.href = 'home.html?message=Welcome to AmaKart! Your account has been created and you are now signed in.';
+                        }, 1500);
+                    } else {
+                        throw new Error(result.error || 'Registration failed');
+                    }
+                    
+                } catch (error) {
+                    console.error('Registration error:', error);
+                    
+                    // Show error message
+                    const errorAlert = document.createElement('div');
+                    errorAlert.className = 'alert alert-error';
+                    errorAlert.innerHTML = `<strong>Error:</strong> ${error.message}`;
+                    
+                    const registerBody = document.querySelector('.register-body');
+                    const existingAlert = registerBody.querySelector('.alert-error');
+                    if (existingAlert) {
+                        existingAlert.remove();
+                    }
+                    registerBody.insertBefore(errorAlert, registerBody.firstChild);
+                    
+                    // Auto-remove error after 5 seconds
+                    setTimeout(() => {
+                        if (errorAlert.parentNode) {
+                            errorAlert.remove();
+                        }
+                    }, 5000);
+                    
+                } finally {
+                    // Reset loading state
+                    submitBtn.classList.remove('loading');
+                    submitBtn.disabled = false;
+                }
+            });
+        });
+
+        // Terms and Privacy functions
+        function showTerms() {
+            alert('Terms of Service:\n\n1. This is a demo website for educational purposes only.\n2. No real transactions will be processed.\n3. User data is stored temporarily for testing purposes.\n4. Do not enter real personal or financial information.\n5. The developer is not responsible for any misuse of the demo.\n\nBy using this site, you acknowledge this is a portfolio demonstration.');
+        }
+
+        function showPrivacy() {
+            alert('Privacy Policy:\n\n1. This is a demo website - no real data processing occurs.\n2. Any information entered is for testing purposes only.\n3. Data may be stored temporarily in browser storage or demo database.\n4. No personal information will be shared or sold.\n5. This site uses cookies for functionality only.\n6. No tracking or analytics beyond basic demo functionality.\n\nFor a real website, a comprehensive privacy policy would be provided.');
+        }
+
+        // Debug function to clear demo users (for testing)
+        function clearDemoUsers() {
+            localStorage.removeItem('demo_users');
+            localStorage.removeItem('demo_current_user');
+            localStorage.removeItem('demo_user_logged_in');
+            console.log('Demo users cleared. You can now register again.');
+        }
+
+        // Add a way to clear users for testing - press Ctrl+Shift+C on the registration page
+        document.addEventListener('keydown', function(e) {
+            if (e.ctrlKey && e.shiftKey && e.key === 'C') {
+                if (confirm('Clear all demo users and start fresh? This will log you out if you\'re signed in.')) {
+                    clearDemoUsers();
+                    alert('Demo data cleared! You can now test registration again.');
+                    // Refresh the page to reset any UI state
+                    window.location.reload();
+                }
+            }
+        });
+
+        // Phone number formatting
+        document.getElementById('phone').addEventListener('input', function() {
+            let value = this.value.replace(/\D/g, '');
+            if (value.length >= 6) {
+                value = value.replace(/(\d{3})(\d{3})(\d{4})/, '($1) $2-$3');
+            } else if (value.length >= 3) {
+                value = value.replace(/(\d{3})(\d{3})/, '($1) $2');
+            }
+            this.value = value;
+        });
+
+        // Enhanced accessibility
+        document.addEventListener('keydown', function(e) {
+            // Allow Enter to submit form when focused on submit button
+            if (e.key === 'Enter' && document.activeElement.id === 'register-btn') {
+                document.getElementById('register-form').dispatchEvent(new Event('submit'));
+            }
+        });
+
+        // Auto-focus first field
+        document.addEventListener('DOMContentLoaded', function() {
+            const firstField = document.getElementById('firstName');
+            if (firstField) {
+                setTimeout(() => firstField.focus(), 100);
+            }
+        });
+    </script>
+</body>
+</html>

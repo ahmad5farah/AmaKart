@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign In - AmaKart</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* This section adds additional styles to perfect the form's elegance without changing the main styles.css */
+        
+        /* Ensures the main content wrapper has a minimum height for proper footer placement */
+        .main-content {
+            min-height: calc(100vh - var(--header-height) - var(--footer-height) - 40px);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem 0;
+        }
+
+        /* Adds a subtle fade-in animation for the form section */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.8s ease-out;
+        }
+        
+        /* Custom styles to enhance the floating label effect and fix the overlay issue */
+        .form-group {
+            position: relative;
+            margin-bottom: 2rem;
+        }
+
+        /* FIXED: Added a more explicit border color to ensure visibility */
+        .form-group .form-input {
+            width: 100%;
+            padding: 1.5rem 1rem 0.75rem 1rem;
+            font-size: 1rem;
+            border: 1px solid var(--border-color, #d1d5db); /* Fallback to a solid gray color */
+            border-radius: var(--border-radius);
+            transition: all 0.3s ease;
+            outline: none;
+        }
+
+        .form-group .form-label {
+            position: absolute;
+            top: 1.25rem;
+            left: 1rem;
+            font-size: 1rem;
+            color: var(--text-color-muted);
+            transition: all 0.3s ease;
+            pointer-events: none;
+        }
+
+        .form-input:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(var(--primary-color-rgb), 0.2);
+        }
+        
+        /* Ensure the input's placeholder is not visible when filled to fix the overlay issue */
+        .form-input:not(:placeholder-shown) + .form-label {
+            top: 0.25rem;
+            left: 0.75rem;
+            font-size: 0.75rem;
+            color: var(--primary-color);
+        }
+
+        .form-input:focus + .form-label {
+            top: 0.25rem;
+            left: 0.75rem;
+            font-size: 0.75rem;
+            color: var(--primary-color);
+        }
+        
+        /* Enhances button styling with hover effects */
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-xl);
+        }
+
+        .btn-secondary:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-xl);
+        }
+
+        .btn-outline:hover {
+            background-color: var(--primary-color);
+            color: var(--white);
+            border-color: var(--primary-color);
+        }
+
+        /* General styling for elegance */
+        .text-center { text-align: center; }
+        .text-muted { color: var(--text-color-muted); }
+        .text-primary { color: var(--primary-color); }
+        .font-bold { font-weight: bold; }
+        .text-3xl { font-size: 2.25rem; }
+        .text-lg { font-size: 1.125rem; }
+        .text-sm { font-size: 0.875rem; }
+        .mb-2 { margin-bottom: 0.5rem; }
+        .mb-4 { margin-bottom: 1rem; }
+        .mb-6 { margin-bottom: 1.5rem; }
+        .mt-2 { margin-top: 0.5rem; }
+        .mt-4 { margin-top: 1rem; }
+        .mt-6 { margin-top: 1.5rem; }
+        .mt-md { margin-top: var(--space-md); }
+        .mt-sm { margin-top: var(--space-sm); }
+        .w-100 { width: 100%; }
+        .p-4 { padding: 1rem; }
+        .items-center { align-items: center; }
+        .justify-between { justify-content: space-between; }
+        .space-y-4 > * + * { margin-top: 1rem; }
+        .space-x-4 > * + * { margin-left: 1rem; }
+        .space-x-2 > * + * { margin-left: 0.5rem; }
+
+    </style>
+</head>
+<body>
+    <div class="disclaimer-bar">
+        This is a demo portfolio website. All data is for educational purposes only and not for commercial use.
+    </div>
+
+    <div class="main-content">
+        
+        <header class="header">
+            <div class="container flex justify-between align-center">
+                <a href="home.html" class="logo">AmaKart</a>
+                
+                <nav class="nav-menu">
+                    <ul class="nav-links flex space-x-4">
+                        <li><a href="home.html" class="nav-item">Home</a></li>
+                        <li><a href="catalog.html" class="nav-item">Catalog</a></li>
+                        <li><a href="about.html" class="nav-item">About</a></li>
+                        <li><a href="contact.html" class="nav-item">Contact</a></li>
+                    </ul>
+                </nav>
+                
+                <div class="user-actions flex align-center space-x-4">
+                    <a href="cart.html" class="icon-btn" aria-label="Cart">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span class="badge" id="cart-count">0</span>
+                    </a>
+                    <a href="signin.html" class="btn btn-outline" style="border: 2px solid var(--primary-color);">Sign In</a>
+                </div>
+            </div>
+        </header>
+
+        <section class="container" style="max-width: 500px; margin: 4rem auto;">
+            <div class="form-section fade-in">
+                <h2 class="text-center font-bold text-3xl mb-2">Sign In to Your Account</h2>
+                <p class="text-center text-muted text-sm mb-6">Welcome back! Please sign in to continue.</p>
+                
+                <div class="security-card p-4 mt-4 mb-4">
+                    <h4 class="text-center text-lg font-semibold text-warning mb-2">Important: For Educational Purposes Only</h4>
+                    <p class="text-center text-sm text-muted">
+                        By signing in, you agree that your details will be used for educational purposes only.
+                    </p>
+                </div>
+
+                <form id="signin-form" class="space-y-4">
+                    <div class="form-group">
+                        <input type="email" id="email" name="email" placeholder=" " required class="form-input">
+                        <label for="email" class="form-label">Email address</label>
+                    </div>
+
+                    <div class="form-group">
+                        <input type="password" id="password" name="password" placeholder=" " required class="form-input">
+                        <label for="password" class="form-label">Password</label>
+                    </div>
+
+                    <div class="flex justify-between items-center text-sm mt-4">
+                        <label class="checkbox flex items-center space-x-2 text-muted">
+                            <input type="checkbox" id="remember-me" name="remember-me">
+                            <span>Remember me</span>
+                        </label>
+                        <a href="forgotpassword.html" class="text-sm font-medium hover:underline text-primary">Forgot Password?</a>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary btn-lg mt-6 w-100 shadow-md transform hover:scale-105 transition duration-300" id="signin-btn">
+                        Sign In
+                    </button>
+                    <a href="register.html" class="btn btn-outline btn-lg mt-2 w-100 shadow-md transform hover:scale-105 transition duration-300">Create Account</a>
+                </form>
+
+                <p class="text-center mt-6 text-sm">
+                    <a href="account.html" class="text-primary hover:underline">Access My Account</a>
+                </p>
+            </div>
+            
+            <div class="security-card p-4 mt-4 text-center">
+                <h3 class="text-lg font-semibold mb-2">Demo Account (For Testing)</h3>
+                <p class="text-sm">
+                    <strong>Email:</strong> <span class="text-primary">demo@amakart.com</span><br>
+                    <strong>Password:</strong> <span class="text-primary">Demo123456</span>
+                </p>
+                <div class="mt-4">
+                    <button onclick="fillDemoCredentials()" class="btn btn-demo shadow-md transform hover:scale-105 transition duration-300">Use Demo Account</button>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="home.html">Home</a></li>
+                        <li><a href="catalog.html">Catalog</a></li>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Customer Service</h3>
+                    <ul>
+                        <li><a href="customerservice.html">Help Center</a></li>
+                        <li><a href="customerservice.html">Shipping Info</a></li>
+                        <li><a href="customerservice.html">Returns</a></li>
+                        <li><a href="customerservice.html">Track Order</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Account</h3>
+                    <ul>
+                        <li><a href="signin.html">Sign In</a></li>
+                        <li><a href="register.html">Create Account</a></li>
+                        <li><a href="account.html">My Account</a></li>
+                        <li><a href="orders.html">Order History</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Connect</h3>
+                    <ul>
+                        <li><a href="#">Facebook</a></li>
+                        <li><a href="#">Twitter</a></li>
+                        <li><a href="#">Instagram</a></li>
+                        <li><a href="#">LinkedIn</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 AmaKart. This is a demo portfolio website for educational purposes only.</p>
+            </div>
+        </div>
+    </footer>
+    
+    <script type="module" src="shared.js"></script>
+    <script type="module" src="signin.js"></script>
+    <script>
+        function fillDemoCredentials() {
+            document.getElementById('email').value = 'demo@amakart.com';
+            document.getElementById('password').value = 'Demo123456';
+            
+            // This line ensures any previous validation errors are cleared
+            if (window.AmaKart && typeof window.AmaKart.clearAllValidationErrors === 'function') {
+                window.AmaKart.clearAllValidationErrors();
+            }
+        }
+    </script>
+</body>
+</html>
